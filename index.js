@@ -15,7 +15,7 @@ server.get("/", (req, res) => {
   res.send({ message: "API is running..." });
 });
 
-server.get(`/users`, (req, res) => {
+server.get(`/api/users`, (req, res) => {
   db.find()
     .then(users => {
       res.status(200).json(users);
@@ -28,7 +28,7 @@ server.get(`/users`, (req, res) => {
     });
 });
 
-server.get("/users/:id", (req, res) => {
+server.get("/api/users/:id", (req, res) => {
   const id = req.params.id;
 
   db.findById(id)
@@ -52,7 +52,7 @@ server.get("/users/:id", (req, res) => {
 
 // ***** POST REQUESTS *****
 
-server.post(`/users`, (req, res) => {
+server.post(`/api/users`, (req, res) => {
   const { name, bio } = req.body;
 
   // First need to check if both the bio and the name exist
@@ -67,18 +67,16 @@ server.post(`/users`, (req, res) => {
         res.status(201).json(user);
       })
       .catch(error => {
-        res
-          .status(500)
-          .json({
-            error: "There was an error while saving the user to the database."
-          });
+        res.status(500).json({
+          error: "There was an error while saving the user to the database."
+        });
       });
   }
 });
 
 // ***** DELETE REQUESTS *****
 
-server.delete("/users/:id", (req, res) => {
+server.delete("/api/users/:id", (req, res) => {
   const id = req.params.id;
 
   db.remove(id)
@@ -98,7 +96,7 @@ server.delete("/users/:id", (req, res) => {
 
 // ***** PUT REQUESTS *****
 
-server.put("/users/:id", (req, res) => {
+server.put("/api/users/:id", (req, res) => {
   const { name, bio } = req.body;
 
   // Check if name and bio are empty, and returns errorMessage if they are
